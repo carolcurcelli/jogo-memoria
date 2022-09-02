@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		for (let i = 0; i < cardArray.length; i++) {
 			var card = document.createElement('img')
 			card.setAttribute('src', 'images/cover.jpg')
+			card.classList.add('back')
 			card.setAttribute('data-id', i)
 			card.addEventListener('click', flipCard)
 			grid.appendChild(card)
@@ -91,19 +92,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		else {
 			cards[optionOneId].setAttribute('src', 'images/cover.jpg')
+			cards[optionOneId].classList.add('back')
 			cards[optionTwoId].setAttribute('src', 'images/cover.jpg')
+			cards[optionTwoId].classList.add('back')
+			// faz card voltar a ser jogável:
+			cards[optionOneId].addEventListener('click', flipCard)
+			cards[optionTwoId].addEventListener('click', flipCard)
 		}
 		cardsChosen = []
 		cardsChosenId = []
 		resultDisplay.textContent = cardsWon.length
 		if (cardsWon.length === cardArray.length/2) {
-			resultDisplay.textContent = "Parabéns! Você achou todos!"
+			resultDisplay.textContent = "Congrats! You found them all!"
 			newGame.classList.add('new-game')
 		}
 	}
 
 	// virando o card
 	function flipCard() {
+		this.classList.remove('back')
+		this.classList.add('selected')
+		this.removeEventListener('click', flipCard)
 		var cardId = this.getAttribute('data-id')
 		cardsChosen.push(cardArray[cardId].name)
 		cardsChosenId.push(cardId)
